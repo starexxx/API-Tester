@@ -43,7 +43,7 @@ body {
 .menu-icon {
     cursor: pointer;
     margin-right: 20px;
-    color: var(--primary);
+    color: var(--text);
 }
 
 .sidebar {
