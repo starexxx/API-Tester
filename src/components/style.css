@@ -306,6 +306,7 @@ pre {
 
 .add-param {
     background: var(--primary) !important;
+    color: white;
     margin-top: 8px;
     width: auto;
     padding: 8px 12px;
