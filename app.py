@@ -630,7 +630,7 @@ def send_request():
 def get_history():
     try:
         if not os.path.exists('/tmp/history.json'):
-            with open('history.json', 'w') as f:
+            with open('/tmp/history.json', 'w') as f:
                 json.dump([], f)
         
         with open('/tmp/history.json', 'r') as f:
@@ -664,7 +664,7 @@ def save_to_history(request_data, response_data):
         
         history = history[:50]
         
-        with open('history.json', 'w') as f:
+        with open('/tmp/history.json', 'w') as f:
             json.dump(history, f, indent=2)
             
     except Exception as e:
@@ -672,6 +672,6 @@ def save_to_history(request_data, response_data):
 
 if __name__ == '__main__':
     if not os.path.exists('/tmp/history.json'):
-        with open('history.json', 'w') as f:
+        with open('/tmp/history.json', 'w') as f:
             json.dump([], f)
     app.run(debug=True)
