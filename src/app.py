@@ -222,7 +222,6 @@ HTML_TEMPLATE = """
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
             extractParamsFromURL();
-            addParamRow();
             loadHistory();
         });
 
