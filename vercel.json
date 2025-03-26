@@ -4,7 +4,7 @@
     {
       "src": "src/app.py",
       "use": "@vercel/python",
-      "config": { 
+      "config": {
         "maxLambdaSize": "15mb",
         "runtime": "python3.9"
       }
@@ -12,26 +12,49 @@
     {
       "src": "index.html",
       "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "src/app.py"
     },
     {
-      "src": "/(.*)",
-      "dest": "index.html"
+      "src": "src/components/style.css",
+      "use": "@vercel/static"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "src/components/$1"
+      "src": "src/components/script.js",
+      "use": "@vercel/static"
     }
   ],
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "src/app.py"
+    },
+    {
+      "source": "/static/(.*)",
+      "destination": "src/components/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "headers": [
+    {
+      "source": "/(.*.css)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*.js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "cleanUrls": true
 }
