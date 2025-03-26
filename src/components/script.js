@@ -14,7 +14,6 @@ const responseTabs = document.querySelectorAll('.response-tabs .tab');
 document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     extractParamsFromURL();
-    addParamRow();
     loadHistory();
 });
 
