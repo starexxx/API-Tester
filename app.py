@@ -629,11 +629,11 @@ def send_request():
 @app.route('/get-history', methods=['GET'])
 def get_history():
     try:
-        if not os.path.exists('history.json'):
+        if not os.path.exists('/tmp/history.json'):
             with open('history.json', 'w') as f:
                 json.dump([], f)
         
-        with open('history.json', 'r') as f:
+        with open('/tmp/history.json', 'r') as f:
             try:
                 history = json.load(f)
                 if not isinstance(history, list):
@@ -647,8 +647,8 @@ def get_history():
 def save_to_history(request_data, response_data):
     try:
         history = []
-        if os.path.exists('history.json'):
-            with open('history.json', 'r') as f:
+        if os.path.exists('/tmp/history.json'):
+            with open('/tmp/history.json', 'r') as f:
                 try:
                     history = json.load(f)
                     if not isinstance(history, list):
@@ -671,7 +671,7 @@ def save_to_history(request_data, response_data):
         print(f"Error saving history: {str(e)}")
 
 if __name__ == '__main__':
-    if not os.path.exists('history.json'):
+    if not os.path.exists('/tmp/history.json'):
         with open('history.json', 'w') as f:
             json.dump([], f)
     app.run(debug=True)
