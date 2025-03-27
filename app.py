@@ -1,8 +1,32 @@
 from flask import Flask, send_from_directory, request, jsonify
 import requests
 import time
+import sqlite3
+import os
+from datetime import datetime
 
 app = Flask(__name__)
+
+DATABASE = '/tmp/history.db'
+
+def get_db():
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    with app.app_context():
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL,
+                request TEXT NOT NULL,
+                response TEXT NOT NULL
+            )
+        ''')
+        db.commit()
 
 @app.route('/')
 def serve_index():
@@ -74,49 +98,25 @@ def send_request():
 @app.route('/get-history', methods=['GET'])
 def get_history():
     try:
-        if not os.path.exists('/tmp/history.json'):
-            with open('/tmp/history.json', 'w') as f:
-                json.dump([], f)
-        
-        with open('/tmp/history.json', 'r') as f:
-            try:
-                history = json.load(f)
-                if not isinstance(history, list):
-                    history = []
-                return jsonify(history)
-            except json.JSONDecodeError:
-                return jsonify([])
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute('SELECT * FROM history ORDER BY id DESC LIMIT 50')
+        history = cursor.fetchall()
+        return jsonify([dict(row) for row in history])
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 def save_to_history(request_data, response_data):
     try:
-        history = []
-        if os.path.exists('/tmp/history.json'):
-            with open('/tmp/history.json', 'r') as f:
-                try:
-                    history = json.load(f)
-                    if not isinstance(history, list):
-                        history = []
-                except json.JSONDecodeError:
-                    history = []
-        
-        history.insert(0, {
-            'timestamp': datetime.now().isoformat(),
-            'request': request_data,
-            'response': response_data
-        })
-        
-        history = history[:50]
-        
-        with open('/tmp/history.json', 'w') as f:
-            json.dump(history, f, indent=2)
-            
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute('''
+            INSERT INTO history (timestamp, request, response) VALUES (?, ?, ?)
+        ''', (datetime.now().isoformat(), json.dumps(request_data), json.dumps(response_data)))
+        db.commit()
     except Exception as e:
         print(f"Error saving history: {str(e)}")
 
 if __name__ == '__main__':
-    if not os.path.exists('/tmp/history.json'):
-        with open('/tmp/history.json', 'w') as f:
-            json.dump([], f)
+    init_db()
     app.run(debug=True)
