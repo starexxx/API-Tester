@@ -558,7 +558,6 @@ HTML_TEMPLATE = """
 </body>
 </html>
 """
-
 @app.route('/')
 def index():
     return render_template_string(HTML_TEMPLATE)
@@ -577,23 +576,14 @@ def send_request():
         timeout = data.get('timeout', 5000) / 1000
         
         try:
-            if method in ['GET', 'HEAD', 'OPTIONS']:
-                response = requests.request(
-                    method,
-                    url,
-                    headers=headers,
-                    allow_redirects=follow_redirect,
-                    timeout=timeout
-                )
-            else:
-                response = requests.request(
-                    method,
-                    url,
-                    headers=headers,
-                    data=body,
-                    allow_redirects=follow_redirect,
-                    timeout=timeout
-                )
+            response = requests.request(
+                method,
+                url,
+                headers=headers,
+                data=body if method not in ['GET', 'HEAD', 'OPTIONS'] else None,
+                allow_redirects=follow_redirect,
+                timeout=timeout
+            )
             
             try:
                 response_data = response.json()
@@ -609,7 +599,6 @@ def send_request():
             }
             
             save_to_history(data, formatted_response)
-            
             return jsonify({'response': formatted_response})
             
         except requests.exceptions.RequestException as e:
@@ -636,9 +625,7 @@ def get_history():
         with open('history.json', 'r') as f:
             try:
                 history = json.load(f)
-                if not isinstance(history, list):
-                    history = []
-                return jsonify(history)
+                return jsonify(history if isinstance(history, list) else [])
             except json.JSONDecodeError:
                 return jsonify([])
     except Exception as e:
@@ -651,8 +638,6 @@ def save_to_history(request_data, response_data):
             with open('history.json', 'r') as f:
                 try:
                     history = json.load(f)
-                    if not isinstance(history, list):
-                        history = []
                 except json.JSONDecodeError:
                     history = []
         
@@ -669,9 +654,5 @@ def save_to_history(request_data, response_data):
             
     except Exception as e:
         print(f"Error saving history: {str(e)}")
-
-if __name__ == '__main__':
-    if not os.path.exists('history.json'):
-        with open('history.json', 'w') as f:
-            json.dump([], f)
-    app.run(debug=True)
+def handler(event, context):
+    return app(event, context)
