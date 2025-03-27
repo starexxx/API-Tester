@@ -1,0 +1,33 @@
+[
+  {
+    "timestamp": "2025-03-27T09:30:25.129966",
+    "request": {
+      "url": "https://starexxai.vercel.app/chat/Hello",
+      "method": "GET",
+      "headers": {},
+      "body": "",
+      "followRedirect": true,
+      "includeCookies": true,
+      "timeout": 5000
+    },
+    "response": {
+      "status": 200,
+      "statusText": "OK",
+      "headers": {
+        "Age": "0",
+        "Cache-Control": "public, max-age=0, must-revalidate",
+        "Content-Length": "62",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Mar 2025 04:00:25 GMT",
+        "Server": "Vercel",
+        "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+        "X-Vercel-Cache": "MISS",
+        "X-Vercel-Id": "bom1::iad1::q4kvb-1743048022735-479972a1bd79"
+      },
+      "data": {
+        "Starexx": "Hello! How can I assist you today? \ud83d\ude0a"
+      },
+      "responseTime": "3110.67 ms"
+    }
+  }
+]
