@@ -654,5 +654,6 @@ def save_to_history(request_data, response_data):
             
     except Exception as e:
         print(f"Error saving history: {str(e)}")
+        
 def handler(event, context):
     return app(event, context)
