@@ -13,7 +13,7 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Starexx API Tester</title>
+    <title>API Tester</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&display=swap');
         @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
