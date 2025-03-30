@@ -102,9 +102,6 @@ HTML_TEMPLATE = """
         <a href="#" class="menu-item" data-page="response">
             <span class="material-icons">code</span> Response
         </a>
-        <a href="#" class="menu-item" data-page="history">
-            <span class="material-icons">history</span> History
-        </a>
     </div>
     <div class="content">
         <div id="home" class="tab-content active">
