@@ -200,10 +200,7 @@ HTML_TEMPLATE = """
                 </div>
             </div>
         </div>
-        <div id="history" class="tab-content">
-            <div class="card">
-                <div class="card-title">History</div>
-                <div id="historyList">
+        <div id="historyList">
                     <div class="empty-state">No requests made yet</div>
                 </div>
             </div>
